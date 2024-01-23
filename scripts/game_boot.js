@@ -1,3 +1,4 @@
+//#3
 let config;
 let game;
 
