@@ -1,3 +1,4 @@
+// #4
 class MainScene extends Phaser.Scene {
 
 	constructor()
