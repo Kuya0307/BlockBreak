@@ -3,8 +3,8 @@ let config;
 let game;
 
 // ゲーム画面サイズ
-const D_WIDTH = 800;
-const D_HEIGHT = 600;
+const D_WIDTH = 1915;
+const D_HEIGHT = 1080;
 
 // ページ読み込み完了時に実行
 window.onload = function() {
