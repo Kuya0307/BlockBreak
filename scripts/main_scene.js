@@ -8,6 +8,9 @@ class MainScene extends Phaser.Scene {
 
 	preload()
     {
+        this.load.image('background', 'assets/back.png');
+        this.load.image('bar', 'assets/bar.png');
+        this.load.image('ball', 'assets/ball.png');
         this.load.image('block1', 'assets/block1.png');//通常ブロック
         this.load.image('block2', 'assets/block2.png');//お邪魔ブロック
         this.load.image('block3', 'assets/block3.png');//特殊ブロック
@@ -15,6 +18,9 @@ class MainScene extends Phaser.Scene {
 
     create()
     {
+        this.add.image(300, 400, 'background');
+        this.add.image(100, 100, 'ball');
+        this.add.image(100, 100, 'bar');
         //上段
         this.add.image(50, 30, 'block1');
         this.add.image(150, 30, 'block2');
