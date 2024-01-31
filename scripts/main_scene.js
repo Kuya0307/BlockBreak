@@ -8,12 +8,16 @@ class MainScene extends Phaser.Scene {
 
 	preload()
     {
+        this.load.image('background', 'assets/back.png');
+        this.load.image('bar', 'assets/bar.png');
+        this.load.image('ball', 'assets/ball.png');
     }
 
     create()
     {
-        this.cameras.main.setBackgroundColor("#333388");
-        this.add.text(D_WIDTH/2, D_HEIGHT/2, 'Hello World', { fontSize: '28px', fill: '#FFF' ,fontFamily: "Arial"}); 
-
+        this.add.image(300, 400, 'background');
+        this.add.image(100, 100, 'ball');
+        this.add.image(100, 100, 'bar');
+       
     }
 }
