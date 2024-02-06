@@ -20,8 +20,6 @@ class MainScene extends Phaser.Scene {
         const ball = this.physics.add.sprite(600, 288, 'ball');
         //MainSceneクラスのプロパティをballを設定
         this.ball = ball;
-        this.add.image(100, 100, 'bar');
-        this.add.image(100, 100, 'ball');
         this.bar=this.add.image(600, 350, 'bar');
         //上段
         this.add.image(50, 30, 'block1');
@@ -70,7 +68,6 @@ class MainScene extends Phaser.Scene {
         ball.body.collideWorldBounds = true;
         ball.body.bounce.set(1);
     }
-}
 
     // 毎フレーム実行される繰り返し処理
 
