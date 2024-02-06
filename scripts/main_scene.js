@@ -1,12 +1,10 @@
 // #4
 class MainScene extends Phaser.Scene {
-
-	constructor()
-	{
-		super('hello-world')
-	}
-
-	preload()
+    constructor()
+    {
+        super('hello-world')
+    }
+    preload()
     {
         this.load.image('background', 'assets/back.png');
         this.load.image('bar', 'assets/bar.png');
@@ -15,11 +13,13 @@ class MainScene extends Phaser.Scene {
         this.load.image('block2', 'assets/block2.png');//お邪魔ブロック
         this.load.image('block3', 'assets/block3.png');//特殊ブロック
     }
-
     create()
     {
         this.add.image(300, 400, 'background');
-        this.add.image(100, 100, 'ball');
+        //ballの画像を物理演算を持った画像にする
+        const ball = this.physics.add.sprite(600, 288, 'ball');
+        //MainSceneクラスのプロパティをballを設定
+        this.ball = ball;
         this.add.image(100, 100, 'bar');
         //上段
         this.add.image(50, 30, 'block1');
@@ -35,7 +35,6 @@ class MainScene extends Phaser.Scene {
         this.add.image(1050, 30, 'block1');
         this.add.image(1150, 30, 'block1');
         this.add.image(1250, 30, 'block1');
-
         //中段
         this.add.image(0, 87, 'block1');
         this.add.image(100, 87, 'block1');
@@ -51,7 +50,6 @@ class MainScene extends Phaser.Scene {
         this.add.image(1100, 87, 'block2');
         this.add.image(1200, 87, 'block1');
         this.add.image(1300, 87, 'block1');
-
         //下段
         this.add.image(50,144, 'block1');
         this.add.image(150, 144, 'block1');
@@ -66,7 +64,8 @@ class MainScene extends Phaser.Scene {
         this.add.image(1050, 144, 'block2');
         this.add.image(1150, 144, 'block1');
         this.add.image(1250, 144, 'block1');
-
-
+        ball.body.velocity.set(600, 288);
+        ball.body.collideWorldBounds = true;
+        ball.body.bounce.set(1);
     }
 }
