@@ -21,6 +21,8 @@ class MainScene extends Phaser.Scene {
         //MainSceneクラスのプロパティをballを設定
         this.ball = ball;
         this.add.image(100, 100, 'bar');
+        this.add.image(100, 100, 'ball');
+        this.bar=this.add.image(600, 350, 'bar');
         //上段
         this.add.image(50, 30, 'block1');
         this.add.image(150, 30, 'block2');
@@ -68,4 +70,20 @@ class MainScene extends Phaser.Scene {
         ball.body.collideWorldBounds = true;
         ball.body.bounce.set(1);
     }
+}
+
+    // 毎フレーム実行される繰り返し処理
+
+    update() {
+        // キーボードの情報を取得
+        let cursors = this.input.keyboard.createCursorKeys();
+        if (cursors.left.isDown) 
+        {
+        //console.log("Left!");
+            this.bar.x -= 6;// 左方向に移動
+        } else if (cursors.right.isDown) {
+        //console.log("Right!");
+            this.bar.x += 6;// 右方向に移動
+         }
+     }
 }
