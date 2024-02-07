@@ -20,50 +20,55 @@ class MainScene extends Phaser.Scene {
         const ball = this.physics.add.sprite(600, 288, 'ball');
         //MainSceneクラスのプロパティをballを設定
         this.ball = ball;
+        let staticGroup = this.physics.add.staticGroup();
         this.bar=this.add.image(600, 350, 'bar');
+        this.physics.add.overlap(ball, staticGroup, collectCoin, null, this);
+        function collectCoin(p,block1){
+            block1.destroy();// 星を消す
+        }
         //上段
-        this.add.image(50, 30, 'block1');
-        this.add.image(150, 30, 'block2');
-        this.add.image(250, 30, 'block2');
-        this.add.image(350, 30, 'block1');
-        this.add.image(450, 30, 'block3');
-        this.add.image(550, 30, 'block1');
-        this.add.image(650, 30, 'block1');
-        this.add.image(750, 30, 'block1');
-        this.add.image(850, 30, 'block1');
-        this.add.image(950, 30, 'block1');
-        this.add.image(1050, 30, 'block1');
-        this.add.image(1150, 30, 'block1');
-        this.add.image(1250, 30, 'block1');
+        staticGroup.create(50, 30, 'block1');
+        staticGroup.create(150, 30, 'block2');
+        staticGroup.create(250, 30, 'block2');
+        staticGroup.create(350, 30, 'block1');
+        staticGroup.create(450, 30, 'block3');
+        staticGroup.create(550, 30, 'block1');
+        staticGroup.create(650, 30, 'block1');
+        staticGroup.create(750, 30, 'block1');
+        staticGroup.create(850, 30, 'block1');
+        staticGroup.create(950, 30, 'block1');
+        staticGroup.create(1050, 30, 'block1');
+        staticGroup.create(1150, 30, 'block1');
+        staticGroup.create(1250, 30, 'block1');
         //中段
-        this.add.image(0, 87, 'block1');
-        this.add.image(100, 87, 'block1');
-        this.add.image(200, 87, 'block1');
-        this.add.image(300, 87, 'block1');
-        this.add.image(400, 87, 'block1');
-        this.add.image(500, 87, 'block1');
-        this.add.image(600, 87, 'block3');
-        this.add.image(700, 87, 'block1');
-        this.add.image(800, 87, 'block1');
-        this.add.image(900, 87, 'block2');
-        this.add.image(1000, 87, 'block1');
-        this.add.image(1100, 87, 'block2');
-        this.add.image(1200, 87, 'block1');
-        this.add.image(1300, 87, 'block1');
+        staticGroup.create(0, 87, 'block1');
+        staticGroup.create(100, 87, 'block1');
+        staticGroup.create(200, 87, 'block1');
+        staticGroup.create(300, 87, 'block1');
+        staticGroup.create(400, 87, 'block1');
+        staticGroup.create(500, 87, 'block1');
+        staticGroup.create(600, 87, 'block3');
+        staticGroup.create(700, 87, 'block1');
+        staticGroup.create(800, 87, 'block1');
+        staticGroup.create(900, 87, 'block2');
+        staticGroup.create(1000, 87, 'block1');
+        staticGroup.create(1100, 87, 'block2');
+        staticGroup.create(1200, 87, 'block1');
+        staticGroup.create(1300, 87, 'block1');
         //下段
-        this.add.image(50,144, 'block1');
-        this.add.image(150, 144, 'block1');
-        this.add.image(250, 144, 'block1');
-        this.add.image(350, 144, 'block1');
-        this.add.image(450, 144, 'block1');
-        this.add.image(550, 144, 'block1');
-        this.add.image(650, 144, 'block1');
-        this.add.image(750, 144, 'block1');
-        this.add.image(850, 144, 'block3');
-        this.add.image(950, 144, 'block1');
-        this.add.image(1050, 144, 'block2');
-        this.add.image(1150, 144, 'block1');
-        this.add.image(1250, 144, 'block1');
+        staticGroup.create(50,144, 'block1');
+        staticGroup.create(150, 144, 'block1');
+        staticGroup.create(250, 144, 'block1');
+        staticGroup.create(350, 144, 'block1');
+        staticGroup.create(450, 144, 'block1');
+        staticGroup.create(550, 144, 'block1');
+        staticGroup.create(650, 144, 'block1');
+        staticGroup.create(750, 144, 'block1');
+        staticGroup.create(850, 144, 'block3');
+        staticGroup.create(950, 144, 'block1');
+        staticGroup.create(1050, 144, 'block2');
+        staticGroup.create(1150, 144, 'block1');
+        staticGroup.create(1250, 144, 'block1');
         ball.body.velocity.set(600, 288);
         ball.body.collideWorldBounds = true;
         ball.body.bounce.set(1);
@@ -82,5 +87,6 @@ class MainScene extends Phaser.Scene {
         //console.log("Right!");
             this.bar.x += 6;// 右方向に移動
          }
+
      }
 }
