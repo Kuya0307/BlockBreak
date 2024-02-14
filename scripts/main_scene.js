@@ -17,6 +17,7 @@ class MainScene extends Phaser.Scene {
     }
     create()
     {
+        
         this.add.image(300, 400, 'background');
         //ballの画像を物理演算を持った画像にする
         const ball = this.physics.add.sprite(600, 288, 'ball');
@@ -25,7 +26,7 @@ class MainScene extends Phaser.Scene {
         let staticGroup = this.physics.add.staticGroup();
         let staticGroup2 = this.physics.add.staticGroup();
         let staticGroup3 = this.physics.add.staticGroup();
-        this.bar = this.physics.add.sprite(600, 500, 'bar').setImmovable();
+        this.bar = this.physics.add.sprite(600, 450, 'bar').setImmovable();
         this.physics.add.collider(this.ball, staticGroup, this.ballHitBlock, null, this);
         this.physics.add.collider(this.ball, staticGroup2, this.ballHitBlock2, null, this);
         this.physics.add.collider(this.ball, staticGroup3, this.ballHitBlock3, null, this);
@@ -78,6 +79,10 @@ class MainScene extends Phaser.Scene {
         ball.body.collideWorldBounds = true;
         ball.body.bounce.set(1);
         this.bar.setCollideWorldBounds(true);
+        this.physics.pause();
+        this.keys = {};
+        this.keys.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this._leftTimeText = this.add.text(500, 288, 'Press the space key to start.', { fontSize: '50px', fill: '#FFF' ,fontFamily: "Arial"});
 
     }
     ballHitBlock(ball, block) {
@@ -102,6 +107,11 @@ class MainScene extends Phaser.Scene {
     }
     // 毎フレーム実行される繰り返し処理
     update() {
+        if (this.keys.space.isDown) {
+            // Space bar is pressed, add your logic here]
+            this.physics.resume();
+            this._leftTimeText.setText('');
+        }
         let cursors = this.input.keyboard.createCursorKeys();
         var isLeftKeyDown = cursors.left.isDown;
         var isRightKeyDown = cursors.right.isDown;
