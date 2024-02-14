@@ -75,6 +75,7 @@ class MainScene extends Phaser.Scene {
         ball.body.velocity.set(600, 288);
         ball.body.collideWorldBounds = true;
         ball.body.bounce.set(1);
+        this.bar.setCollideWorldBounds(true);
     }
     ballHitBlock(ball, block) {
         block.destroy();
@@ -92,15 +93,20 @@ class MainScene extends Phaser.Scene {
     }
     // 毎フレーム実行される繰り返し処理
     update() {
-        // キーボードの情報を取得
         let cursors = this.input.keyboard.createCursorKeys();
-        if (cursors.left.isDown)
-        {
-        //console.log("Left!");
-            this.bar.x -= 6;// 左方向に移動
-        } else if (cursors.right.isDown) {
-        //console.log("Right!");
-            this.bar.x += 6;// 右方向に移動
-         }
+        var isLeftKeyDown = cursors.left.isDown;
+        var isRightKeyDown = cursors.right.isDown;
+        
+        if (isLeftKeyDown) {
+            this.bar.setVelocityX(-300);
+        } else if (isRightKeyDown) {
+            this.bar.setVelocityX(300);
+        } else {
+            this.bar.setVelocityX(0);
+        }
+
+        if ((this.bar.x <= 0 || this.bar.x >= config.width) && (isLeftKeyDown || isRightKeyDown)) {
+            this.bar.setVelocityX(isLeftKeyDown ? -300 : 300);
+        }
      }
 }
