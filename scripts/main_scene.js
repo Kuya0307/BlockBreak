@@ -21,17 +21,20 @@ class MainScene extends Phaser.Scene {
         //MainSceneクラスのプロパティをballを設定
         this.ball = ball;
         let staticGroup = this.physics.add.staticGroup();
-        this.bar=this.add.image(600, 350, 'bar');
-        this.physics.add.overlap(ball, staticGroup, collectCoin, null, this);
-        function collectCoin(p,block1){
-            block1.destroy();// 星を消す
-        }
+        let staticGroup2 = this.physics.add.staticGroup();
+        let staticGroup3 = this.physics.add.staticGroup();
+        this.bar = this.physics.add.sprite(600, 500, 'bar').setImmovable();
+        this.physics.add.collider(this.ball, staticGroup, this.ballHitBlock, null, this);
+        this.physics.add.collider(this.ball, staticGroup2, this.ballHitBlock2, null, this);
+        this.physics.add.collider(this.ball, staticGroup3, this.ballHitBlock3, null, this);
+        //バーにボールが当たった時の処理
+        this.physics.add.collider(this.ball, this.bar, this.ballHitBar, null, this);
         //上段
         staticGroup.create(50, 30, 'block1');
-        staticGroup.create(150, 30, 'block2');
-        staticGroup.create(250, 30, 'block2');
+        staticGroup2.create(150, 30, 'block2');
+        staticGroup2.create(250, 30, 'block2');
         staticGroup.create(350, 30, 'block1');
-        staticGroup.create(450, 30, 'block3');
+        staticGroup3.create(450, 30, 'block3');
         staticGroup.create(550, 30, 'block1');
         staticGroup.create(650, 30, 'block1');
         staticGroup.create(750, 30, 'block1');
@@ -47,12 +50,12 @@ class MainScene extends Phaser.Scene {
         staticGroup.create(300, 87, 'block1');
         staticGroup.create(400, 87, 'block1');
         staticGroup.create(500, 87, 'block1');
-        staticGroup.create(600, 87, 'block3');
+        staticGroup3.create(600, 87, 'block3');
         staticGroup.create(700, 87, 'block1');
         staticGroup.create(800, 87, 'block1');
-        staticGroup.create(900, 87, 'block2');
+        staticGroup2.create(900, 87, 'block2');
         staticGroup.create(1000, 87, 'block1');
-        staticGroup.create(1100, 87, 'block2');
+        staticGroup2.create(1100, 87, 'block2');
         staticGroup.create(1200, 87, 'block1');
         staticGroup.create(1300, 87, 'block1');
         //下段
@@ -64,22 +67,34 @@ class MainScene extends Phaser.Scene {
         staticGroup.create(550, 144, 'block1');
         staticGroup.create(650, 144, 'block1');
         staticGroup.create(750, 144, 'block1');
-        staticGroup.create(850, 144, 'block3');
+        staticGroup3.create(850, 144, 'block3');
         staticGroup.create(950, 144, 'block1');
-        staticGroup.create(1050, 144, 'block2');
+        staticGroup2.create(1050, 144, 'block2');
         staticGroup.create(1150, 144, 'block1');
         staticGroup.create(1250, 144, 'block1');
         ball.body.velocity.set(600, 288);
         ball.body.collideWorldBounds = true;
         ball.body.bounce.set(1);
     }
-
+    ballHitBlock(ball, block) {
+        block.destroy();
+        ball.setVelocity(ball.body.velocity.x, -ball.body.velocity.y);
+    }
+    ballHitBlock2(ball, block) {
+        ball.setVelocity(ball.body.velocity.x, -ball.body.velocity.y);
+    }
+    ballHitBlock3(ball, block) {
+        block.destroy();
+        ball.setVelocity(ball.body.velocity.x, -ball.body.velocity.y);
+    }
+    ballHitBar(ball) {
+        ball.setVelocity(600, -288);
+    }
     // 毎フレーム実行される繰り返し処理
-
     update() {
         // キーボードの情報を取得
         let cursors = this.input.keyboard.createCursorKeys();
-        if (cursors.left.isDown) 
+        if (cursors.left.isDown)
         {
         //console.log("Left!");
             this.bar.x -= 6;// 左方向に移動
@@ -87,6 +102,5 @@ class MainScene extends Phaser.Scene {
         //console.log("Right!");
             this.bar.x += 6;// 右方向に移動
          }
-
      }
 }
