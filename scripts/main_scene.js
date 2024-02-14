@@ -3,6 +3,8 @@ class MainScene extends Phaser.Scene {
     constructor()
     {
         super('hello-world')
+        this.score=0;
+
     }
     preload()
     {
@@ -81,10 +83,17 @@ class MainScene extends Phaser.Scene {
         this.keys = {};
         this.keys.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this._leftTimeText = this.add.text(500, 288, 'Press the space key to start.', { fontSize: '50px', fill: '#FFF' ,fontFamily: "Arial"});
+
     }
     ballHitBlock(ball, block) {
         block.destroy();
         ball.setVelocity(ball.body.velocity.x, -ball.body.velocity.y);
+        this.score++;
+        if(this.score >=5){
+            this.bar.disableBody(true,true);
+            this.physics.pause();
+            this._leftTimeText = this.add.text(600, 288, 'clear!!', { fontSize: '50px', fill: '#FFF' ,fontFamily: "Arial"});
+        }
     }
     ballHitBlock2(ball, block) {
         ball.setVelocity(ball.body.velocity.x, -ball.body.velocity.y);
@@ -108,15 +117,21 @@ class MainScene extends Phaser.Scene {
         var isRightKeyDown = cursors.right.isDown;
         
         if (isLeftKeyDown) {
-            this.bar.setVelocityX(-300);
+            this.bar.setVelocityX(-500);
         } else if (isRightKeyDown) {
-            this.bar.setVelocityX(300);
+            this.bar.setVelocityX(500);
         } else {
             this.bar.setVelocityX(0);
         }
 
         if ((this.bar.x <= 0 || this.bar.x >= config.width) && (isLeftKeyDown || isRightKeyDown)) {
-            this.bar.setVelocityX(isLeftKeyDown ? -300 : 300);
+            this.bar.setVelocityX(isLeftKeyDown ? -500 : 500);
+        }
+
+        if(this.ball.y>=510){
+            this.bar.disableBody(true,true);
+            this.physics.pause();
+            this._leftTimeText = this.add.text(600, 288, 'GameOver...', { fontSize: '50px', fill: '#FFF' ,fontFamily: "Arial"});
         }
      }
 }
