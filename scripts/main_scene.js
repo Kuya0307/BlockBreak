@@ -4,12 +4,17 @@ class MainScene extends Phaser.Scene {
     {
         super('hello-world')
         this.score=0;
+        this.bar_score=0;
 
     }
     preload()
     {
         this.load.image('background', 'assets/back.png');
         this.load.image('bar', 'assets/bar.png');
+        this.load.image('bar2', 'assets/bar2.png');//
+        this.load.image('bar3', 'assets/bar3.png');
+        this.load.image('bar4', 'assets/bar4.png');//
+        this.load.image('bar5', 'assets/bar5.png');
         this.load.image('ball', 'assets/ball.png');
         this.load.image('block1', 'assets/block1.png');//通常ブロック
         this.load.image('block2', 'assets/block2.png');//お邪魔ブロック
@@ -19,6 +24,7 @@ class MainScene extends Phaser.Scene {
     {
         
         this.add.image(300, 400, 'background');
+        // this.add.image(400, 400, 'bar2');
         //ballの画像を物理演算を持った画像にする
         const ball = this.physics.add.sprite(600, 288, 'ball');
         //MainSceneクラスのプロパティをballを設定
@@ -27,11 +33,6 @@ class MainScene extends Phaser.Scene {
         let staticGroup2 = this.physics.add.staticGroup();
         let staticGroup3 = this.physics.add.staticGroup();
         this.bar = this.physics.add.sprite(600, 450, 'bar').setImmovable();
-        this.physics.add.collider(this.ball, staticGroup, this.ballHitBlock, null, this);
-        this.physics.add.collider(this.ball, staticGroup2, this.ballHitBlock2, null, this);
-        this.physics.add.collider(this.ball, staticGroup3, this.ballHitBlock3, null, this);
-        //バーにボールが当たった時の処理
-        this.physics.add.collider(this.ball, this.bar, this.ballHitBar, null, this);
         //上段
         staticGroup.create(50, 30, 'block1');
         staticGroup2.create(150, 30, 'block2');
@@ -79,6 +80,10 @@ class MainScene extends Phaser.Scene {
         ball.body.collideWorldBounds = true;
         ball.body.bounce.set(1);
         this.bar.setCollideWorldBounds(true);
+        this.physics.add.collider(ball, this.bar, this.ballHitBar, null, this);
+        this.physics.add.collider(ball, staticGroup, this.ballHitBlock, null, this);
+        this.physics.add.collider(ball, staticGroup2, this.ballHitBlock2, null, this);
+        this.physics.add.collider(ball, staticGroup3, this.ballHitBlock3, null, this);
         this.physics.pause();
         this.keys = {};
         this.keys.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -86,21 +91,70 @@ class MainScene extends Phaser.Scene {
 
     }
     ballHitBlock(ball, block) {
+        // ブロックを破壊
         block.destroy();
-        ball.setVelocity(ball.body.velocity.x, -ball.body.velocity.y);
+        // ボールの速度を逆向きに設定することで反射させる
+        this.ball.setVelocity(-this.ball.body.velocity.x, -this.ball.body.velocity.y);
+        // コリジョンを一時的に無効化して、即座に再有効化しないようにする
+        this.ball.body.enable = false;
+        // 一定時間後にコリジョンを再有効化する
+        this.time.delayedCall(50, () => {
+            if (this.ball && this.ball.body) {
+                // コリジョンを再有効化
+                this.ball.body.enable = true;
+                // バウンドの処理を調整
+                const ballSpeed = 600;
+                const bounceAngle = Phaser.Math.Between(0,60);
+                this.physics.velocityFromAngle(bounceAngle, ballSpeed, this.ball.body.velocity);
+            }
+        });
         this.score++;
-        if(this.score >=5){
-            this.bar.disableBody(true,true);
+        if (this.score >= 35) {
+            this.bar.disableBody(true, true);
             this.physics.pause();
-            this._leftTimeText = this.add.text(600, 288, 'clear!!', { fontSize: '50px', fill: '#FFF' ,fontFamily: "Arial"});
+            this._leftTimeText = this.add.text(600, 288, 'clear!!', { fontSize: '50px', fill: '#FFF', fontFamily: "Arial" });
         }
     }
+    
+    
+    
+    
     ballHitBlock2(ball, block) {
-        ball.setVelocity(ball.body.velocity.x, -ball.body.velocity.y);
+        // ボールの速度を逆向きに設定することで反射させる
+        this.ball.setVelocity(-this.ball.body.velocity.x, -this.ball.body.velocity.y);
+        // コリジョンを一時的に無効化して、即座に再有効化しないようにする
+        this.ball.body.enable = false;
+        // 一定時間後にコリジョンを再有効化する
+        this.time.delayedCall(50, () => {
+            if (this.ball && this.ball.body) {
+                // コリジョンを再有効化
+                this.ball.body.enable = true;
+                // バウンドの処理を調整
+                const ballSpeed = 600;
+                const bounceAngle = Phaser.Math.Between(0, 60);
+                this.physics.velocityFromAngle(bounceAngle, ballSpeed, this.ball.body.velocity);
+            }
+        });
     }
     ballHitBlock3(ball, block) {
+        // ブロックを破壊
         block.destroy();
-        ball.setVelocity(ball.body.velocity.x, -ball.body.velocity.y);
+        // ボールの速度を逆向きに設定することで反射させる
+        this.ball.setVelocity(-this.ball.body.velocity.x, -this.ball.body.velocity.y);
+        // コリジョンを一時的に無効化して、即座に再有効化しないようにする
+        this.ball.body.enable = false;
+        // 一定時間後にコリジョンを再有効化する
+        this.time.delayedCall(50, () => {
+            if (this.ball && this.ball.body) {
+                // コリジョンを再有効化
+                this.ball.body.enable = true;
+                // バウンドの処理を調整
+                // const ballSpeed = Phaser.Math.Between(200, 400);
+                const ballSpeed = 600;
+                const bounceAngle = Phaser.Math.Between(0, 60);
+                this.physics.velocityFromAngle(bounceAngle, ballSpeed, this.ball.body.velocity);
+            }
+        });
     }
     ballHitBar(ball) {
         ball.setVelocity(600, -288);
