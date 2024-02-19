@@ -33,7 +33,6 @@ class MainScene extends Phaser.Scene {
         this.ball = ball;
         let staticGroup = this.physics.add.staticGroup();
         let staticGroup2 = this.physics.add.staticGroup();
-        this.staticGroup2 = staticGroup2;
         let staticGroup3 = this.physics.add.staticGroup();
         this.bar = this.physics.add.sprite(600, 450, 'bar').setImmovable();
         //上段
@@ -123,43 +122,24 @@ class MainScene extends Phaser.Scene {
     
     
     ballHitBlock2(ball, block) {
-        // ボールが当たり続けているか確認するためのカウンター
-        let hitCounter = 0;
-        // 毎フレームごとに呼ばれるイベントを追加
-        this.time.addEvent({
-            repeat: -1, // 無限に繰り返す
-            callback: () => {
-                // ボールが当たっているかどうか判定
-                if (this.physics.overlap(ball, block)) {
-                    hitCounter++;
-                } else {
-                    hitCounter = 0; // 当たっていない場合はカウンターをリセット
-                }
-                // 5秒以上当たり続けていたらブロックを破壊
-                if (hitCounter >= 300) { // 300フレーム = 5秒（1秒 = 60フレーム）
-                    block.destroy();
-                    // ボールの速度を逆向きに設定することで反射させる
-                    this.ball.setVelocity(-this.ball.body.velocity.x, -this.ball.body.velocity.y);
-                    // コリジョンを一時的に無効化して、即座に再有効化しないようにする
-                    this.ball.body.enable = false;
-                    // 一定時間後にコリジョンを再有効化する
-                    this.time.delayedCall(50, () => {
-                        if (this.ball && this.ball.body) {
-                            // コリジョンを再有効化
-                            this.ball.body.enable = true;
-    
-                            // バウンドの処理を調整
-                            const ballSpeed = 600;
-                            const bounceAngle = Phaser.Math.Between(10, 60);
-                            this.physics.velocityFromAngle(bounceAngle, ballSpeed, this.ball.body.velocity);
-                        }
-                    });
-                }
-            },
-            delay: 16, // 16ミリ秒ごとに確認（約60FPS）
+        // ボールの速度を逆向きに設定することで反射させる
+        this.ball.setVelocity(-this.ball.body.velocity.x, -this.ball.body.velocity.y);
+        // コリジョンを一時的に無効化して、即座に再有効化しないようにする
+        this.ball.body.enable = false;
+        // ブロックの当たり状態を記録
+        block.hitByBall = true;
+        // 一定時間後にコリジョンを再有効化する
+        this.time.delayedCall(50, () => {
+            if (this.ball && this.ball.body) {
+                // コリジョンを再有効化
+                this.ball.body.enable = true;
+                // バウンドの処理を調整
+                const ballSpeed = 600;
+                const bounceAngle = Phaser.Math.Between(10, 60);
+                this.physics.velocityFromAngle(bounceAngle, ballSpeed, this.ball.body.velocity);
+            }
         });
     }
-    
     ballHitBlock3(ball, block) {
         // ブロックを破壊
         block.destroy();
@@ -246,35 +226,6 @@ class MainScene extends Phaser.Scene {
             this._leftTimeText.setText('');
         }
         this.cursorsdrive(this.speed,this.dis_speed);
-        this.staticGroup2.getChildren().forEach(block => {
-            if (block.hitByBall && this.time.now - block.body.touching.noneTime > 5000) {
-                // ボールが最後にブロックに当たってから5秒以上経過している場合、ブロックを破壊
-                block.destroy();
-            }
-        });
-        // let cursors = this.input.keyboard.createCursorKeys();
-        // var isLeftKeyDown = cursors.left.isDown;
-        // var isRightKeyDown = cursors.right.isDown;
-        
-        // if (isLeftKeyDown) {
-        //     console.log("left1");
-        //     this.bar.setVelocityX(-500);
-        // } else if (isRightKeyDown) {
-        //     console.log("right1");
-        //     this.bar.setVelocityX(500);
-        // } else {
-        //     this.bar.setVelocityX(0);
-        // }
-
-        // if ((this.bar.x <= 0 || this.bar.x >= config.width) && (isLeftKeyDown || isRightKeyDown)) {
-        //     this.bar.setVelocityX(isLeftKeyDown ? -500 : 500);
-        // }
-
-        // if(this.ball.y>=510){
-        //     this.bar.disableBody(true,true);
-        //     this.physics.pause();
-        //     this._leftTimeText = this.add.text(600, 288, 'GameOver...', { fontSize: '50px', fill: '#FFF' ,fontFamily: "Arial"});
-        // }
 
      }
 }
