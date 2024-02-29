@@ -96,20 +96,8 @@ class MainScene extends Phaser.Scene {
         // ブロックを破壊
         block.destroy();
         // ボールの速度を逆向きに設定することで反射させる
-        this.ball.setVelocity(-this.ball.body.velocity.x, -this.ball.body.velocity.y);
-        // コリジョンを一時的に無効化して、即座に再有効化しないようにする
-        this.ball.body.enable = false;
-        // 一定時間後にコリジョンを再有効化する
-        this.time.delayedCall(50, () => {
-            if (this.ball && this.ball.body) {
-                // コリジョンを再有効化
-                this.ball.body.enable = true;
-                // バウンドの処理を調整
-                const ballSpeed = 600;
-                const bounceAngle = Phaser.Math.Between(10,60);
-                this.physics.velocityFromAngle(bounceAngle, ballSpeed, this.ball.body.velocity);
-            }
-        });
+        const reflectionAngle = Phaser.Math.Between(10, 60); // 反射角度を指定
+        this.physics.velocityFromAngle(reflectionAngle, ball.body.speed, ball.body.velocity);
         this.score++;
         if (this.score >= 35) {
             this.bar.disableBody(true, true);
@@ -120,26 +108,12 @@ class MainScene extends Phaser.Scene {
     
     
     
-    
     ballHitBlock2(ball, block) {
         // ボールの速度を逆向きに設定することで反射させる
-        this.ball.setVelocity(-this.ball.body.velocity.x, -this.ball.body.velocity.y);
-        // コリジョンを一時的に無効化して、即座に再有効化しないようにする
-        this.ball.body.enable = false;
-        // ブロックの当たり状態を記録
-        block.hitByBall = true;
-        // 一定時間後にコリジョンを再有効化する
-        this.time.delayedCall(50, () => {
-            if (this.ball && this.ball.body) {
-                // コリジョンを再有効化
-                this.ball.body.enable = true;
-                // バウンドの処理を調整
-                const ballSpeed = 600;
-                const bounceAngle = Phaser.Math.Between(10, 60);
-                this.physics.velocityFromAngle(bounceAngle, ballSpeed, this.ball.body.velocity);
-            }
-        });
+        const reflectionAngle = Phaser.Math.Between(10, 60); // 反射角度を指定
+        this.physics.velocityFromAngle(reflectionAngle, ball.body.speed, ball.body.velocity);
     }
+    
     ballHitBlock3(ball, block) {
         // ブロックを破壊
         block.destroy();
@@ -171,26 +145,13 @@ class MainScene extends Phaser.Scene {
                 this._leftTimeText.setVisible(false);
             });
         }
-        
         // ボールの速度を逆向きに設定することで反射させる
-        this.ball.setVelocity(-this.ball.body.velocity.x, -this.ball.body.velocity.y);
-        // コリジョンを一時的に無効化して、即座に再有効化しないようにする
-        this.ball.body.enable = false;
-        // 一定時間後にコリジョンを再有効化する
-        this.time.delayedCall(50, () => {
-            if (this.ball && this.ball.body) {
-                // コリジョンを再有効化
-                this.ball.body.enable = true;
-                // バウンドの処理を調整
-                // const ballSpeed = Phaser.Math.Between(200, 400);
-                const ballSpeed = 600;
-                const bounceAngle = Phaser.Math.Between(10, 60);
-                this.physics.velocityFromAngle(bounceAngle, ballSpeed, this.ball.body.velocity);
-            }
-        });
+        const reflectionAngle = Phaser.Math.Between(10, 60); // 反射角度を指定
+        this.physics.velocityFromAngle(reflectionAngle, ball.body.speed, ball.body.velocity);
     }
     ballHitBar(ball) {
-        ball.setVelocity(600, -288);
+        const reflectionAngle = Phaser.Math.Between(-50, -288); 
+        this.physics.velocityFromAngle(reflectionAngle, ball.body.speed, ball.body.velocity);
     }
 
     cursorsdrive(speed,dis_speed) {
