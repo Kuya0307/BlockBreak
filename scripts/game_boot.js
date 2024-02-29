@@ -22,7 +22,7 @@ window.onload = function() {
                 gravity: {
                     y: 0
                 }, // 重力
-                debug: true // デバックモード
+                debug: false // デバックモード
             }
         },
         scene: MainScene // デフォルトシーン
